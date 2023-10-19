@@ -3,7 +3,7 @@ import { errorHandler } from "../utils/error.js";
 
 export const getAllTodos = async (req, res, next) => {
   const todos = await Todo.find();
-  res.status(200).json({todos});
+  res.status(200).json(todos);
   try {
   } catch (error) {
     next(errorHandler(400, error.message));
@@ -15,7 +15,7 @@ export const getSingleTodo = async (req, res, next) => {
     const todo = await Todo.findOne({ _id: id });
     if (!todo) return next(errorHandler(400, "No todo found"));
 
-    res.status(200).json({todo});
+    res.status(200).json(todo);
   } catch (error) {
     next(errorHandler(400, error.message));
   }
