@@ -12,7 +12,6 @@ const app = express();
 connectDb();
 
 app.use(express.json());
-app.use(cors());
 
 const __dirname = path.resolve();
 
