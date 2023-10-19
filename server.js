@@ -7,6 +7,8 @@ import { connectDb } from "./config/connectDb.js";
 import cors from "cors";
 import path from "path";
 
+const app = express();
+
 connectDb();
 
 app.use(express.json());
@@ -14,7 +16,6 @@ app.use(cors());
 
 //const __dirname = path.resolve();
 
-const app = express();
 //app.use(express.static(path.join(__dirname, "/client/dist")));
 
 app.use("/", express.static(path.join(__dirname, "public")));
