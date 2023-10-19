@@ -35,11 +35,7 @@ app.all("*", (req, res) => {
   }
 });
 
-const PORT = 5000;
-
-app.listen(PORT, () => {
-  console.log(`App is listening on port ${PORT}`);
-});
+const PORT = process.env.PORT;
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
@@ -50,3 +46,8 @@ app.use((err, req, res, next) => {
     statusCode,
   });
 });
+
+app.listen(PORT, () => {
+  console.log(`App is listening on port ${PORT}`);
+});
+
