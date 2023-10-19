@@ -6,6 +6,7 @@ import todoRouter from "./routes/todoRoutes.js";
 import { connectDb } from "./config/connectDb.js";
 import cors from "cors";
 import path from "path";
+import { corsOptions } from "./config/corsOptions.js";
 
 const app = express();
 
@@ -13,9 +14,11 @@ connectDb();
 
 app.use(express.json());
 
-const __dirname = path.resolve();
+app.use(cors(corsOptions));
 
-//app.use(express.static(path.join(__dirname, "/client/dist")));
+//app.use(express.urlencoded({ extended: true }));
+
+const __dirname = path.resolve();
 
 app.use("/", express.static(path.join(__dirname, "public")));
 
@@ -32,18 +35,7 @@ app.all("*", (req, res) => {
   }
 });
 
-/* app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-}); */
-
-/* app.use(cors({
-  origin: 'https://keltdm.onrender.com'
-}));
- */
-
 const PORT = 3000;
-
-//app.use(express.urlencoded({ extended: true }));
 
 app.listen(PORT, () => {
   console.log(`App is listening on port ${PORT}`);
