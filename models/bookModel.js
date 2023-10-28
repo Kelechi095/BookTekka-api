@@ -17,10 +17,6 @@ const bookSchema = new mongoose.Schema({
         required : true 
     },
 
-    priority: {
-        type: String,
-        enum: ['high', 'medium', 'low']
-    },
     price: {
         type: Number,
         required: true
