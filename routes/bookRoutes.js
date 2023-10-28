@@ -4,7 +4,7 @@ import { createBook, deleteBook, getAllBooks, getSingleBook, updateBook } from '
 const router = express.Router()
 
 router.route('/').get(getAllBooks)
-router.route('/:id').get(getSingleBook)
+router.route('/').get(getSingleBook)
 router.route('/').post(createBook)
 router.route('/:id').delete(deleteBook)
 router.route('/:id').patch(updateBook)
