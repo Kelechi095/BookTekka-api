@@ -22,7 +22,7 @@ const __dirname = path.resolve();
 
 app.use("/", express.static(path.join(__dirname, "public")));
 
-app.use("/api/todos", bookRouter);
+app.use("/api/books", bookRouter);
 
 app.all("*", (req, res) => {
   res.status(404);

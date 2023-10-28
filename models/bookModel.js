@@ -13,7 +13,7 @@ const bookSchema = new mongoose.Schema({
 
     read: {
         type: String,
-        enum: ['finished', 'reading', 'Not started'],
+        enum: ['finished', 'reading', 'unread'],
         required : true 
     },
 
