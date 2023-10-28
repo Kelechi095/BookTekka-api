@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import todoRouter from "./routes/todoRoutes.js";
+import bookRouter from "./routes/bookRoutes.js";
 import { connectDb } from "./config/connectDb.js";
 import cors from "cors";
 import path from "path";
@@ -22,7 +22,7 @@ const __dirname = path.resolve();
 
 app.use("/", express.static(path.join(__dirname, "public")));
 
-app.use("/api/todos", todoRouter);
+app.use("/api/todos", bookRouter);
 
 app.all("*", (req, res) => {
   res.status(404);
