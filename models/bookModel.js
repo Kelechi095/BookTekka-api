@@ -11,7 +11,12 @@ const bookSchema = new mongoose.Schema({
         type: String
     },
 
-    read: {
+    genre: {
+        type: String,
+        enum: ['African', 'Fantasy', 'Horror', 'Mystery', 'Non fiction', 'Romance',  'Science fiction', 'Thriller', 'Young Adult',]
+    },
+
+    status: {
         type: String,
         enum: ['Finished', 'Reading', 'Unread'],
         required : true 

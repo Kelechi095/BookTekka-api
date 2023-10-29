@@ -23,11 +23,11 @@ export const getSingleBook = async (req, res, next) => {
 
 export const createBook = async (req, res, next) => {
   try {
-    const { title, author, read, price } = req.body;
+    const { title, author, status, genre, price } = req.body;
 
-    if (!title || !author || !read || !price)
+    if (!title || !author || !status || !genre || !price)
       return next(errorHandler(400, "Value required"));
-    const newBook = new Book({ title, author, read, price});
+    const newBook = new Book({ title, author, status, genre, price });
 
     await newBook.save();
     res.status(201).json({ msg: "Book created successfully" });
@@ -52,14 +52,16 @@ export const deleteBook = async (req, res, next) => {
 export const updateBook = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title, author, read, price } = req.body;
-    if (!title |!author ||!read || !price) return next(errorHandler(400, "Value required"));
+    const { title, author, status, genre, price } = req.body;
+    if (!title || !author || !status || !genre || !price)
+      return next(errorHandler(400, "Value required"));
     const book = await Book.findOne({ _id: id });
     if (!todo) return next(errorHandler(400, "No Book found"));
 
     book.title = title;
-    book.author = author
-    book.read = read;
+    book.author = author;
+    book.status = status;
+    book.genre = genre
     book.price = price;
     await book.save();
     res.status(200).json({ msg: "Book updated" });
