@@ -23,10 +23,12 @@ export const getSingleBook = async (req, res, next) => {
 
 export const createBook = async (req, res, next) => {
   try {
+
+    console.log(req.body)
     const { title, author, status, genre, price } = req.body;
 
-    if (!title || !author || !status || !genre || !price)
-      return next(errorHandler(400, "Value required"));
+    if (!title || !author || !status || !genre || !price) return next(errorHandler(400, "Value required"));
+
     const newBook = new Book({ title, author, status, genre, price });
 
     await newBook.save();
