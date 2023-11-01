@@ -76,7 +76,7 @@ export const updateProgress = async (req, res, next) => {
     const { id } = req.params;
     const { currentPage, totalPages } = req.body;
 
-    console.log(req.body)
+    console.log(currentPage)
 
     if (!currentPage || !totalPages) return next(errorHandler(400, "Value required"));
 
