@@ -74,12 +74,17 @@ export const updateBook = async (req, res, next) => {
 export const updateProgress = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { progress } = req.body;
-    if (!progress) return next(errorHandler(400, "Value required"));
+    const { currentPage, totalPages } = req.body;
+
+    if (!currentPage, !totalPages) return next(errorHandler(400, "Value required"));
+
+    const newProgress = Math.round((currentPage/totalPages) * 100)
+
     const book = await Book.findOne({ _id: id });
     if (!book) return next(errorHandler(400, "No Book found"));
 
-    book.progress = progress;
+    book.progress = newProgress;
+
     await book.save();
     res.status(200).json({ msg: "Book progress updated" });
   } catch (error) {
