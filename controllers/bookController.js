@@ -80,7 +80,7 @@ export const updateProgress = async (req, res, next) => {
 
     if (!currentPage || !totalPages) return next(errorHandler(400, "Value required"));
 
-    const newProgress = Math.round((currentPage/totalPages) * 100)
+    const newProgress = Math.round((Number(currentPage)/Number(totalPages)) * 100)
 
     const book = await Book.findOne({ _id: id });
     if (!book) return next(errorHandler(400, "No Book found"));
