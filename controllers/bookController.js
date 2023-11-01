@@ -76,6 +76,8 @@ export const updateProgress = async (req, res, next) => {
     const { id } = req.params;
     const { currentPage, totalPages } = req.body;
 
+    console.log(req.body)
+
     if (!currentPage || !totalPages) return next(errorHandler(400, "Value required"));
 
     const newProgress = Math.round((currentPage/totalPages) * 100)
