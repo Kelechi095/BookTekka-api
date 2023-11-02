@@ -11,6 +11,18 @@ const bookSchema = new mongoose.Schema({
         type: String
     },
 
+    description: {
+        type: String
+    },
+
+    thumbnail: {
+        type: String
+    },
+
+    smallThumbnail: {
+        type: String
+    },
+
     genre: {
         type: String,
         enum: ['African Literature', 'Fantasy', 'Horror', 'Literary Fiction', 'Mystery', 'Non Fiction', 'Romance',  'Science Fiction', 'Thriller', 'Young Adult', 'Others']
