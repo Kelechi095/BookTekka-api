@@ -2,9 +2,9 @@ import Book from "../models/bookModel.js";
 import { errorHandler } from "../utils/error.js";
 
 export const getAllBooks = async (req, res, next) => {
-  const books = await Book.find();
-  res.status(200).json(books);
   try {
+    const books = await Book.find();
+    res.status(200).json(books);
   } catch (error) {
     next(errorHandler(400, error.message));
   }
@@ -90,9 +90,6 @@ export const updateBook = async (req, res, next) => {
     book.genre = genre;
     book.price = price;
 
-    if (book.status !== status) {
-      book.progress = 0;
-    }
     await book.save();
     res.status(200).json({ msg: "Book updated" });
   } catch (error) {
