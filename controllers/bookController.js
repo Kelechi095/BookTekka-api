@@ -5,49 +5,63 @@ export const getAllBooks = async (req, res, next) => {
   try {
     const { search, status, sort } = req.query;
 
-    const queryObject = {};
+    if (!search && !status && !sort) {
+      const books = await Book.find();
+      res.status(200).json(books);
+    } else {
+      const queryObject = {};
 
-    if (status !== "All") {
-      queryObject.status = status;
+      if (status) {
+        if (status === "All") {
+          delete queryObject["status"];
+        } else {
+          queryObject.status = status;
+        }
+      }
+
+
+      if (search) {
+        queryObject.title = { $regex: search, $options: "i" };
+      }
+
+      let result = Book.find(queryObject);
+
+      //SORTING RESULTS
+
+      if (sort === "All") {
+        result = result;
+      }
+
+      if (sort === "Latest") {
+        result = result.sort("-createdAt");
+      }
+      if (sort === "Earliest") {
+        result = result.sort("createdAt");
+      }
+      if (sort === "a-z") {
+        result = result.sort("title");
+      }
+      if (sort === "z-a") {
+        result = result.sort("-title");
+      }
+      if (sort === "Highest") {
+        result = result.sort("-price");
+      }
+      if (sort === "Lowest") {
+        result = result.sort("price");
+      }
+
+      // setup pagination
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
+
+      result = result.skip(skip).limit(limit);
+
+      const books = await result;
+
+      res.status(200).json(books);
     }
-
-    if (search) {
-      queryObject.title = { $regex: search, $options: "i" };
-    }
-
-    let result = Book.find(queryObject);
-
-    //SORTING RESULTS
-
-    if (sort === "Latest") {
-      result = result.sort("-createdAt");
-    }
-    if (sort === "Earliest") {
-      result = result.sort("createdAt");
-    }
-    if (sort === "a-z") {
-      result = result.sort("title");
-    }
-    if (sort === "z-a") {
-      result = result.sort("-title");
-    }
-    if (sort === "Highest") {
-      result = result.sort("-price");
-    }
-    if (sort === "Lowest") {
-      result = result.sort("price");
-    }
-
-    // setup pagination
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
-    result = result.skip(skip).limit(limit);
-
-    const books = await result;
-
-    res.status(200).json(books);
   } catch (error) {
     next(errorHandler(400, error.message));
   }
