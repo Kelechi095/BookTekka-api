@@ -38,7 +38,8 @@ export const getAllBooks = async (req, res, next) => {
     const numOfPages = Math.ceil(totalBooks / limit);
     res
       .status(200)
-      .json({ NumberOfBooks: books.length, totalBooks, numOfPages, books });
+      /* .json({ NumberOfBooks: books.length, totalBooks, numOfPages, books }); */
+      .json(books)
   } catch (error) {
     next(errorHandler(400, error.message));
   }
