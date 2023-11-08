@@ -14,10 +14,10 @@ export const getAllBooks = async (req, res, next) => {
     if (status && status !== "All") {
       queryObject.status = status;
     }
-    
+
     const sortOptions = {
-      Latest: "-createdAt",
-      Earliest: "createdAt",
+      Newest: "-createdAt",
+      Oldest: "createdAt",
       "A-Z": "title",
       "Z-A": "-title",
     };
@@ -30,9 +30,8 @@ export const getAllBooks = async (req, res, next) => {
     const limit = Number(req.query.limit) || 10;
     const skip = (page - 1) * limit; */
 
-    const books = await Book.find(queryObject)
-      .sort(sortKey)
-      /* .skip(skip)
+    const books = await Book.find(queryObject).sort(sortKey);
+    /* .skip(skip)
       .limit(limit);
  */
     /* const totalJobs = await Job.countDocuments(queryObject);
