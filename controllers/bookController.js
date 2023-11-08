@@ -61,7 +61,6 @@ export const createBook = async (req, res, next) => {
       author,
       status,
       genre,
-      price,
       description,
       thumbnail,
       smallThumbnail,
@@ -72,7 +71,6 @@ export const createBook = async (req, res, next) => {
       !author ||
       !status ||
       !genre ||
-      !price ||
       !description ||
       !thumbnail ||
       !smallThumbnail
@@ -84,7 +82,6 @@ export const createBook = async (req, res, next) => {
       author,
       status,
       genre,
-      price,
       description,
       thumbnail,
       smallThumbnail,
@@ -114,14 +111,13 @@ export const updateBook = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status, genre, price } = req.body;
-    if (!status || !genre || !price)
+    if (!status || !genre)
       return next(errorHandler(400, "Value required"));
     const book = await Book.findOne({ _id: id });
     if (!book) return next(errorHandler(400, "No Book found"));
 
     book.status = status;
     book.genre = genre;
-    book.price = price;
 
     await book.save();
     res.status(200).json({ msg: "Book updated" });
