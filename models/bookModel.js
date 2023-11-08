@@ -38,11 +38,6 @@ const bookSchema = new mongoose.Schema({
         enum: ['Finished', 'Reading', 'Unread'],
         required : true 
     },
-
-    price: {
-        type: Number,
-        required: true
-    }
 }, {
     timestamps: true
 })
