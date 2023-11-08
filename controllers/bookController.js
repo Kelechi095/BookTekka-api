@@ -26,17 +26,19 @@ export const getAllBooks = async (req, res, next) => {
 
     // setup pagination
 
-    /* const page = Number(req.query.page) || 1;
+    const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
-    const skip = (page - 1) * limit; */
+    const skip = (page - 1) * limit;
 
-    const books = await Book.find(queryObject).sort(sortKey);
-    /* .skip(skip)
+    const books = await Book.find(queryObject)
+      .sort(sortKey)
+      .skip(skip)
       .limit(limit);
- */
-    /* const totalJobs = await Job.countDocuments(queryObject);
-    const numOfPages = Math.ceil(totalJobs / limit); */
-    res.status(200).json(books);
+    const totalBooks = await Book.countDocuments(queryObject);
+    const numOfPages = Math.ceil(totalBooks / limit);
+    res
+      .status(200)
+      .json({ NumberOfBooks: books.length, totalBooks, numOfPages, books });
   } catch (error) {
     next(errorHandler(400, error.message));
   }
@@ -111,8 +113,7 @@ export const updateBook = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status, genre, price } = req.body;
-    if (!status || !genre)
-      return next(errorHandler(400, "Value required"));
+    if (!status || !genre) return next(errorHandler(400, "Value required"));
     const book = await Book.findOne({ _id: id });
     if (!book) return next(errorHandler(400, "No Book found"));
 
