@@ -150,3 +150,17 @@ export const updateProgress = async (req, res, next) => {
     next(errorHandler(400, error.message));
   }
 };
+
+export const getOverview = async(req, res) => {
+  try {
+    const totalBooks = await Book.countDocuments()
+    const totalUnread = await Book.countDocuments({status: "Unread"})
+    const totalReading = await Book.countDocuments({status: "Reading"})
+    const totalFinished = await Book.countDocuments({status: "Finished"})
+
+
+    res.status(200).json({totalBooks, totalUnread, totalReading, totalFinished})
+  } catch (error) {
+    next(errorHandler(400, error.message));
+  }
+}
