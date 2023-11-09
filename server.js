@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import bookRouter from "./routes/bookRoutes.js";
 import overviewRouter from "./routes/overviewRouter.js"
+import authRouter from "./routes/authRoute.js"
 import { connectDb } from "./config/connectDb.js";
 import cors from "cors";
 import path from "path";
@@ -23,6 +24,7 @@ const __dirname = path.resolve();
 
 app.use("/", express.static(path.join(__dirname, "public")));
 
+app.use('/api/auth', authRouter)
 app.use("/api/books", bookRouter);
 app.use("/api/overview", overviewRouter);
 

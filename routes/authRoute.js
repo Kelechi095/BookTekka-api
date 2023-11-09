@@ -1,6 +1,5 @@
 import express from 'express'
 import {getProfile, loginUser, loginWithGoogle, logoutUser, refresh, registerUser, setUser, updateUsername} from '../controllers/authController.js'
-//import { verifyJWT } from '../middleware/auth.js'
 import { authenticateUser } from '../middleware/auth.js'
 
 const router = express.Router()
