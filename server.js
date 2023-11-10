@@ -9,6 +9,7 @@ import { connectDb } from "./config/connectDb.js";
 import cors from "cors";
 import path from "path";
 import { corsOptions } from "./config/corsOptions.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -17,6 +18,7 @@ connectDb();
 app.use(express.json());
 
 app.use(cors(corsOptions));
+app.use(cookieParser())
 
 //app.use(express.urlencoded({ extended: true }));
 
