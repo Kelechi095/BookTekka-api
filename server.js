@@ -5,6 +5,7 @@ import express from "express";
 import bookRouter from "./routes/bookRoutes.js";
 import overviewRouter from "./routes/overviewRouter.js"
 import authRouter from "./routes/authRoute.js"
+import useRouter from "./routes/userRoute.js"
 import { connectDb } from "./config/connectDb.js";
 import cors from "cors";
 import path from "path";
@@ -29,6 +30,7 @@ app.use("/", express.static(path.join(__dirname, "public")));
 app.use('/api/auth', authRouter)
 app.use("/api/books", bookRouter);
 app.use("/api/overview", overviewRouter);
+app.use('/api/user', useRouter)
 
 app.all("*", (req, res) => {
   res.status(404);
