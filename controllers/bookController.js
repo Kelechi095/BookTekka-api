@@ -73,9 +73,9 @@ export const createBook = async (req, res, next) => {
       !author ||
       !status ||
       !genre ||
-      !description ||
+      /* !description ||
       !thumbnail ||
-      !smallThumbnail
+      !smallThumbnail */
     )
       return next(errorHandler(400, "Value required"));
 
