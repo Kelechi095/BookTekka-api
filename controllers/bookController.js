@@ -72,7 +72,7 @@ export const createBook = async (req, res, next) => {
       !title ||
       !author ||
       !status ||
-      !genre ||
+      !genre
       /* !description ||
       !thumbnail ||
       !smallThumbnail */
