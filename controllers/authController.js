@@ -240,10 +240,6 @@ export const updateProfile = async (req, res, next) => {
         if (!uploadRes)
           return res.status(400).json({ msg: "error uploading photo" });
 
-        await User.findOneAndDelete({
-          profilePicture: req.user.profilePicture,
-        });
-
         user.username = newUsername;
         user.profilePicture = uploadRes.url;
 
