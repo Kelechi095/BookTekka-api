@@ -214,43 +214,41 @@ export const getProfile = async (req, res) => {
 export const updateProfile = async (req, res, next) => {
   try {
     const { newUsername, file } = req.body;
-    if (!newUsername)
-      return res.status(400).json({ msg: "Please fill all fields" });
-
     const user = await User.findOne({ username: req.user.username });
 
     const alreadyExists = await User.findOne({ username: newUsername });
 
-    if (alreadyExists)
+    if (alreadyExists && req.user.username !== newUsername) {
       return res.status(400).json({ msg: "Username already taken" });
+    }
 
-      if(!file) {
-        user.username = newUsername
+    if (!file) {
+      user.username = newUsername;
+      await user.save();
 
-        await user.save()
-      }else {
-
+    } else {
         cloudinary.config({
           cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
           api_key: process.env.CLOUDINARY_API_KEY,
           api_secret: process.env.CLOUDINARY_API_SECRET,
         });
-    
+
         const uploadRes = await cloudinary.uploader.upload(file, {
           upload_preset: "mernAuth",
         });
-    
+
         if (!uploadRes)
           return res.status(400).json({ msg: "error uploading photo" });
-    
-        await User.findOneAndDelete({ profilePicture: req.user.profilePicture });
-    
+
+        await User.findOneAndDelete({
+          profilePicture: req.user.profilePicture,
+        });
+
         user.username = newUsername;
         user.profilePicture = uploadRes.url;
-  
+
         await user.save();
       }
-
 
     const accessToken = jwt.sign(
       {
@@ -275,7 +273,7 @@ export const updateProfile = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ accessToken, username: user.username });
+    //res.json({ accessToken, username: user.username });
 
     res.status(200).json({ msg: "User details changed successfully" });
   } catch (err) {
