@@ -214,7 +214,7 @@ export const getProfile = async (req, res) => {
 export const updateProfile = async (req, res, next) => {
   try {
     const { newUsername, file } = req.body;
-    if (!newUsername || !file)
+    if (!newUsername)
       return res.status(400).json({ msg: "Please fill all fields" });
 
     const user = await User.findOne({ username: req.user.username });
