@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
 
 export const registerUser = async (req, res, next) => {
   try {
@@ -65,12 +66,10 @@ export const loginUser = async (req, res, next) => {
 
 export const refresh = async (req, res, next) => {
   try {
-
-    console.log(req)
+    console.log(req);
     const cookies = req.cookies;
 
     if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
-
 
     const refreshToken = cookies.jwt;
 
@@ -205,20 +204,18 @@ export const logoutUser = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    const user = req.user.username;
+    const user = await User.findOne({ _id: req.user._id });
     res.status(200).json(user);
   } catch (err) {
     res.status(400).json({ msg: err.message });
   }
 };
 
-export const updateUsername = async (req, res, next) => {
+export const updateProfile = async (req, res, next) => {
   try {
-    const { newUsername } = req.body;
-    if (!newUsername)
-      return res.status(200).json({ msg: "Please fill all fields" });
-
-    console.log(req.user);
+    const { newUsername, file } = req.body;
+    if (!newUsername || !profilePicture)
+      return res.status(400).json({ msg: "Please fill all fields" });
 
     const user = await User.findOne({ username: req.user.username });
 
@@ -227,7 +224,23 @@ export const updateUsername = async (req, res, next) => {
     if (alreadyExists)
       return res.status(400).json({ msg: "Username already taken" });
 
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
+    const uploadRes = await cloudinary.uploader.upload(file, {
+      upload_preset: "mernAuth",
+    });
+
+    if (!uploadRes)
+      return res.status(400).json({ msg: "error uploading photo" });
+
+    await User.findOneAndDelete({ profilePicture: req.user.profilePicture });
+
     user.username = newUsername;
+    user.profilePicture = uploadRes.url;
 
     await user.save();
 

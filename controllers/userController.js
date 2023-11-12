@@ -6,7 +6,7 @@ export const getPhoto = async (req, res) => {
   try {
     const photo = await Photo.findOne({ posterId: req.user._id });
 
-    if (!photo)
+    /* if (!photo)
       return res.status(200).json({
         poster: "blank",
         title:
@@ -17,7 +17,7 @@ export const getPhoto = async (req, res) => {
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
-};
+}; */
 
 export const createPhoto = async (req, res) => {
   try {
