@@ -164,10 +164,10 @@ export const updateProgress = async (req, res, next) => {
 
 export const getOverview = async(req, res) => {
   try {
-    const totalBooks = await Book.countDocuments()
-    const totalUnread = await Book.countDocuments({status: "Unread"})
-    const totalReading = await Book.countDocuments({status: "Reading"})
-    const totalFinished = await Book.countDocuments({status: "Finished"})
+    const totalBooks = await Book.countDocuments({posterId: req.user._id.toString()})
+    const totalUnread = await Book.countDocuments({posterId: req.user._id.toString(), status: "Unread"})
+    const totalReading = await Book.countDocuments({posterId: req.user._id.toString(), status: "Reading"})
+    const totalFinished = await Book.countDocuments({posterId: req.user._id.toString(), status: "Finished"})
 
 
     res.status(200).json({totalBooks, totalUnread, totalReading, totalFinished})
