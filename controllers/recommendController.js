@@ -70,10 +70,10 @@ export const addToLibrary = async (req, res, next) => {
   const { title, author, genre, description, thumbnail, smallThumbnail } =
     req.body;
   try {
-    const isExists = await Book.find({ title, posterId: req.user._id.toString() });
+    /* const isExists = await Book.find({ title, posterId: req.user._id.toString() });
 
     if (isExists) return res.status(400).json({ msg: "Book already exists" });
-
+ */
     const newBook = new Book({
       title,
       author,
