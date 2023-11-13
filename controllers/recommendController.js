@@ -78,6 +78,7 @@ export const addToLibrary = async (req, res, next) => {
       title,
       author,
       genre,
+      status: "Unread",
       description,
       thumbnail,
       smallThumbnail,
