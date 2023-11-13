@@ -56,7 +56,7 @@ export const likeRecommendation = async (req, res, next) => {
       res.status(200).json({ msg: "Recommendation unliked" }); */
       await Recommendation.findOneAndUpdate(
         {_id: id},
-        {$push: {likers: req.user.username}}
+        {$pull: {likers: req.user.username}}
         )
 
     } else {
