@@ -48,34 +48,26 @@ export const likeRecommendation = async (req, res, next) => {
     const recommendation = await Recommendation.findOne({ _id: id });
 
     if (recommendation.likers.includes(req.user.username)) {
-      /* recommendation.likes = recommendation.likes - 1;
-      recommendation.likers.filter(
-        (user) => user !== req.user.username
+      await Recommendation.findOneAndUpdate(
+        { _id: id },
+        { $pull: { likers: req.user.username } },
+        { $inc: { likes: -1 } }
       );
-      await recommendation.save();
-      res.status(200).json({ msg: "Recommendation unliked" }); */
-      await Recommendation.findOneAndUpdate(
-        {_id: id},
-        {$pull: {likers: req.user.username}}
-        )
 
-        res.status(200).json({msg: "UnLike successful"})
-
+      res.status(200).json({ msg: "UnLike successful" });
     } else {
-      /* recommendation.likes = recommendation.likes + 1;
-      recommendation.likers.push(req.user.username);
-      await recommendation.save();
-      res.status(200).json({ msg: "Recommendation liked" }); */
       await Recommendation.findOneAndUpdate(
-        {_id: id},
-        {$push: {likers: req.user.username}}
-        )
-        res.status(200).json({msg: "Like successful"})
+        { _id: id },
+        { $push: { likers: req.user.username } },
+        { $inc: { likes: -1 } }
+      );
+      res.status(200).json({ msg: "Like successful" });
     }
   } catch (error) {
     next(errorHandler(400, error.message));
   }
 };
+
 export const addToLibrary = async (req, res, next) => {
   const { title, author, genre, description, thumbnail, smallThumbnail } =
     req.body;
