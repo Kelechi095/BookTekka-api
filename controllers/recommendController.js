@@ -59,6 +59,8 @@ export const likeRecommendation = async (req, res, next) => {
         {$pull: {likers: req.user.username}}
         )
 
+        res.status(200).json({msg: "UnLike successful"})
+
     } else {
       /* recommendation.likes = recommendation.likes + 1;
       recommendation.likers.push(req.user.username);
@@ -68,6 +70,7 @@ export const likeRecommendation = async (req, res, next) => {
         {_id: id},
         {$push: {likers: req.user.username}}
         )
+        res.status(200).json({msg: "Like successful"})
     }
   } catch (error) {
     next(errorHandler(400, error.message));
