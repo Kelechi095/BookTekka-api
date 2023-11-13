@@ -1,12 +1,14 @@
 import Book from "../models/bookModel.js";
 import { errorHandler } from "../utils/error.js";
+import mongoose from "mongoose";
 
 export const getAllBooks = async (req, res, next) => {
   try {
     const { search, status, sort } = req.query;
 
-    const queryObject = {};
+    const queryObject = {posterId: req.user._id.toString()};
 
+    
     if (search) {
       queryObject.title = { $regex: search, $options: "i" };
     }
@@ -29,6 +31,15 @@ export const getAllBooks = async (req, res, next) => {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
     const skip = (page - 1) * limit;
+
+    /* const books = await Book.aggregate([
+      {
+        $match: {
+          posterId: new mongoose.Types.ObjectId(req.user._id.toString()),
+        },
+      },
+    ]).find(queryObject) */
+
 
     const books = await Book.find(queryObject)
       .sort(sortKey)
@@ -86,6 +97,7 @@ export const createBook = async (req, res, next) => {
       description,
       thumbnail,
       smallThumbnail,
+      posterId: req.user._id
     });
 
     await newBook.save();

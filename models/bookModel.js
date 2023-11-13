@@ -15,6 +15,12 @@ const bookSchema = new mongoose.Schema({
         type: String
     },
 
+    posterId: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+        required: [true, "Please provide user"],
+      },
+
     thumbnail: {
         type: String
     },
