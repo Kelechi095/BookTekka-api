@@ -33,15 +33,6 @@ export const getAllBooks = async (req, res, next) => {
     const limit = Number(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    /* const books = await Book.aggregate([
-      {
-        $match: {
-          posterId: new mongoose.Types.ObjectId(req.user._id.toString()),
-        },
-      },
-    ]).find(queryObject) */
-
-
     const books = await Book.find(queryObject)
       .sort(sortKey)
       .skip(skip)
@@ -168,9 +159,6 @@ export const updateProgress = async (req, res, next) => {
 export const getOverview = async(req, res) => {
   try {
 
-    console.log(req.user._id)
-    const books = await Book.findOne({posterId: req.user._id.toString()})
-    console.log(books)
     const totalBooks = await Book.countDocuments({posterId: req.user._id.toString()})
     const totalUnread = await Book.countDocuments({posterId: req.user._id.toString(), status: "Unread"})
     const totalReading = await Book.countDocuments({posterId: req.user._id.toString(), status: "Reading"})
