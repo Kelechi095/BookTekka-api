@@ -67,17 +67,17 @@ export const likeRecommendation = async (req, res, next) => {
   }
 };
 export const addToLibrary = async (req, res, next) => {
-  const { id } = req.params;
+  const {  title, author, genre, description, thumbnail, smallThumbnail } = req.body
   try {
-    const recommendation = await Recommendation.findOne({ _id: id });
+    //const recommendation = await Recommendation.findOne({ _id: id });
 
     const newBook = new Book({
-      title: recommendation.title,
-      author: recommendation.author,
-      genre: recommendation.genre,
-      description: recommendation.description,
-      thumbnail: recommendation.thumbnail,
-      smallThumbnail: recommendation.smallThumbnail,
+      title,
+      author,
+      genre,
+      description,
+      thumbnail,
+      smallThumbnail,
       posterId: req.user._id,
     });
 

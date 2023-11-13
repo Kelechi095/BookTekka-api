@@ -7,8 +7,8 @@ const router = express.Router()
 
 router.route('/').get(getRecommendations)
 router.route('/:id').patch(authenticateUser, likeRecommendation)
-router.route('/:id').post(authenticateUser, createRecommendation)
-router.route('/add/:id').post(authenticateUser, addToLibrary)
+router.route('/').post(authenticateUser, createRecommendation)
+router.route('/add').post(authenticateUser, addToLibrary)
 
 
 export default router
