@@ -92,9 +92,6 @@ export const createBook = async (req, res, next) => {
 
     const user = await User.findOne({ email: req.user.email });
 
-
-      console.log(req.user)
-
     const newBook = new Book({
       title,
       author,
