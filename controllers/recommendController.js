@@ -49,16 +49,14 @@ export const likeRecommendation = async (req, res, next) => {
 
     if (recommendation.likers.includes(req.user.username)) {
       recommendation.likes = recommendation.likes - 1;
-      const newLikers = recommendation.likers.filter(
+      recommendation.likers.filter(
         (user) => user !== req.user.username
       );
-      recommendation.likers = newLikers;
       await recommendation.save();
       res.status(200).json({ msg: "Recommendation unliked" });
     } else {
       recommendation.likes = recommendation.likes + 1;
-      const newLikers = recommendation.push(req.user.username);
-      recommendation.likers = newLikers;
+      recommendation.likers.push(req.user.username);
       await recommendation.save();
       res.status(200).json({ msg: "Recommendation liked" });
     }
