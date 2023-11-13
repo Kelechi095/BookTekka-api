@@ -50,16 +50,14 @@ export const likeRecommendation = async (req, res, next) => {
     if (recommendation.likers.includes(req.user.username)) {
       await Recommendation.findOneAndUpdate(
         { _id: id },
-        { $pull: { likers: req.user.username } },
-        { $inc: { likes: -1 } }
+        { $pull: { likers: req.user.username }, $inc: { likes: -1 }  },
       );
 
       res.status(200).json({ msg: "UnLike successful" });
     } else {
       await Recommendation.findOneAndUpdate(
         { _id: id },
-        { $push: { likers: req.user.username } },
-        { $inc: { likes: 1 } }
+        { $push: { likers: req.user.username }, $inc: { likes: 1 } }
       );
       res.status(200).json({ msg: "Like successful" });
     }
