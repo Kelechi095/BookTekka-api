@@ -89,6 +89,8 @@ export const createBook = async (req, res, next) => {
     )
       return next(errorHandler(400, "Value required"));
 
+      console.log(req.user)
+
     const newBook = new Book({
       title,
       author,
