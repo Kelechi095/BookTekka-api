@@ -6,9 +6,9 @@ const router = express.Router()
 
 router.route('/').get(authenticateUser, getAllBooks)
 router.route('/:id').get(getSingleBook)
-router.route('/').post(createBook, authenticateUser)
-router.route('/:id').delete(deleteBook, authenticateUser)
-router.route('/:id').patch(updateBook, authenticateUser)
+router.route('/').post(authenticateUser, createBook)
+router.route('/:id').delete(authenticateUser, deleteBook)
+router.route('/:id').patch(authenticateUser, updateBook)
 router.route('/progress/:id').patch(updateProgress)
 
 export default router
