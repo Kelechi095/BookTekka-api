@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.route("/register").post(registerUser)
 router.route("/login").post(loginUser)
-router.route('/user').get(setUser)
+router.route('/user').get(authenticateUser, setUser)
 router.route('/google').post(loginWithGoogle)
 router.route('/logout').get(logoutUser)
 router.route("/profile").get(authenticateUser, getProfile)
