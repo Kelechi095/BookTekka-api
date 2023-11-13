@@ -126,7 +126,7 @@ export const deleteBook = async (req, res, next) => {
 export const updateBook = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { status, genre, price } = req.body;
+    const { status, genre} = req.body;
     if (!status || !genre) return next(errorHandler(400, "Value required"));
     const book = await Book.findOne({ _id: id });
     if (!book) return next(errorHandler(400, "No Book found"));
@@ -167,6 +167,10 @@ export const updateProgress = async (req, res, next) => {
 
 export const getOverview = async(req, res) => {
   try {
+
+    console.log(req.user._id)
+    const books = await Book.findOne({posterId: req.user._id.toString()})
+    console.log(books)
     const totalBooks = await Book.countDocuments({posterId: req.user._id.toString()})
     const totalUnread = await Book.countDocuments({posterId: req.user._id.toString(), status: "Unread"})
     const totalReading = await Book.countDocuments({posterId: req.user._id.toString(), status: "Reading"})
