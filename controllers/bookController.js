@@ -1,6 +1,7 @@
 import Book from "../models/bookModel.js";
 import { errorHandler } from "../utils/error.js";
 import mongoose from "mongoose";
+import User from "../models/userModel.js";
 
 export const getAllBooks = async (req, res, next) => {
   try {
@@ -89,6 +90,9 @@ export const createBook = async (req, res, next) => {
     )
       return next(errorHandler(400, "Value required"));
 
+    const user = await User.findOne({ email: req.user.email });
+
+
       console.log(req.user)
 
     const newBook = new Book({
@@ -99,7 +103,7 @@ export const createBook = async (req, res, next) => {
       description,
       thumbnail,
       smallThumbnail,
-      posterId: req.user._id
+      posterId: user._id
     });
 
     await newBook.save();
