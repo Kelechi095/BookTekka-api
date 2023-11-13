@@ -67,9 +67,12 @@ export const likeRecommendation = async (req, res, next) => {
   }
 };
 export const addToLibrary = async (req, res, next) => {
-  const {  title, author, genre, description, thumbnail, smallThumbnail } = req.body
+  const { title, author, genre, description, thumbnail, smallThumbnail } =
+    req.body;
   try {
-    //const recommendation = await Recommendation.findOne({ _id: id });
+    const isExists = await Book.findOne({ title });
+
+    if (isExists) return res.status(400).json({ msg: "Book already exists" });
 
     const newBook = new Book({
       title,
@@ -91,7 +94,9 @@ export const createRecommendation = async (req, res, next) => {
   const { title, author, genre, description, thumbnail, smallThumbnail } =
     req.body;
   try {
-    //const book = await Book.findOne({ _id: id });
+    const isExists = await Recommendation.findOne({ title });
+
+    if (isExists) return res.status(400).json({ msg: "Book already exists" });
 
     const newRecommendation = new Recommendation({
       title,
