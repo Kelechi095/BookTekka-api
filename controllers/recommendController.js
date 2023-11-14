@@ -47,7 +47,7 @@ export const getRecommendations = async (req, res, next) => {
     })
 
     const numOfPages = Math.ceil(totalRecommendations / limit);
-    res.status(200).json({ totalRecommendations, numOfPages, actualRecommendation });
+    res.status(200).json({ totalRecommendations, numOfPages, recommendations: actualRecommendation });
   } catch (error) {
     next(errorHandler(400, error.message));
   }
