@@ -24,6 +24,14 @@ const recommendationSchema = new mongoose.Schema(
       required: [true, "Please provide user"],
     },
 
+    poster: {
+      type: String
+    },
+
+    posterPhoto: {
+      type: String
+    },
+
     thumbnail: {
       type: String,
     },

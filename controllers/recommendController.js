@@ -1,6 +1,7 @@
 import Recommendation from "../models/recommendation.js";
 import { errorHandler } from "../utils/error.js";
 import Book from "../models/bookModel.js";
+import User from "../models/userModel.js";
 
 export const getRecommendations = async (req, res, next) => {
   try {
@@ -38,8 +39,15 @@ export const getRecommendations = async (req, res, next) => {
     const totalRecommendations = await Recommendation.countDocuments(
       queryObject
     );
+
+    const actualRecommendation = recommendations.map(rec => {
+      const user = User.findOne({_id: rec.posterId})
+
+      return {...rec, poster: user.username, posterPhoto: user.profilePicture}
+    })
+
     const numOfPages = Math.ceil(totalRecommendations / limit);
-    res.status(200).json({ totalRecommendations, numOfPages, recommendations });
+    res.status(200).json({ totalRecommendations, numOfPages, actualRecommendation });
   } catch (error) {
     next(errorHandler(400, error.message));
   }
