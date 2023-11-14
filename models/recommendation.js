@@ -19,7 +19,7 @@ const recommendationSchema = new mongoose.Schema(
     },
 
     poster: {
-      String
+      type: String
     },
 
     posterPhoto: {
