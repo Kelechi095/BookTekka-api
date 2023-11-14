@@ -122,7 +122,7 @@ export const addReview = async (req, res, next) => {
 
     await Recommendation.findOneAndUpdate(
       { _id: bookId },
-      { $push: { reviews: {review, reviewer} }}
+      { $push: { reviews: {review, reviewer, reviewerImage: req.user.profilePicture} }}
     );
 
     res.status(200).json({ msg: "Review added successfully" });

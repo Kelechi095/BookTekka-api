@@ -48,6 +48,7 @@ const recommendationSchema = new mongoose.Schema(
       {
         review: String,
         reviewer: String,
+        reviewerImage: String
       }
     ],
   },
