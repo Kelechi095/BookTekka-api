@@ -50,7 +50,7 @@ export const likeRecommendation = async (req, res, next) => {
     if (recommendation.likers.includes(req.user.username)) {
       await Recommendation.findOneAndUpdate(
         { _id: id },
-        { $pull: { likers: req.user.username }, $inc: { likes: -1 }  },
+        { $pull: { likers: req.user.username }, $inc: { likes: -1 } }
       );
 
       res.status(200).json({ msg: "UnLike successful" });
@@ -70,8 +70,6 @@ export const addToLibrary = async (req, res, next) => {
   const { title, author, genre, description, thumbnail, smallThumbnail } =
     req.body;
   try {
-    
- 
     const newBook = new Book({
       title,
       author,
@@ -110,6 +108,25 @@ export const createRecommendation = async (req, res, next) => {
 
     await newRecommendation.save();
     res.status(201).json({ msg: "Book added to recommendation" });
+  } catch (error) {
+    next(errorHandler(400, error.message));
+  }
+};
+
+export const addReview = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const {newReview} = req.body
+
+    if(!review) return res.status(400).json({msg: "Review required"})
+
+    await Recommendation.findOneAndUpdate(
+      { _id: id },
+      { $push: { reviews: newReview }}
+    );
+
+    res.status(200).json({ msg: "Review added successfully" });
   } catch (error) {
     next(errorHandler(400, error.message));
   }

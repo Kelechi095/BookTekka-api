@@ -44,6 +44,12 @@ const recommendationSchema = new mongoose.Schema(
     likers: {
       type: [String],
     },
+    reviews: [
+      {
+        review: String,
+        reviewer: String,
+      }
+    ],
   },
   {
     timestamps: true,
