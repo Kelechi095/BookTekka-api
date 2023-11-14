@@ -102,7 +102,7 @@ export const createRecommendation = async (req, res, next) => {
       description,
       thumbnail,
       smallThumbnail,
-      posterId: req.user._id,
+      poster: req.user.username,
       posterPhoto: req.user.profilePicture,
     });
 
