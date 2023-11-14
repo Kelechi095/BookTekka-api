@@ -115,15 +115,14 @@ export const createRecommendation = async (req, res, next) => {
 
 export const addReview = async (req, res, next) => {
   try {
-    const { id } = req.params;
 
-    const newReview = req.body
+    const {bookId, review, reviewer}= req.body
 
     if(!review) return res.status(400).json({msg: "Review required"})
 
     await Recommendation.findOneAndUpdate(
-      { _id: id },
-      { $push: { reviews: newReview }}
+      { _id: bookId },
+      { $push: { reviews: {review, reviewer} }}
     );
 
     res.status(200).json({ msg: "Review added successfully" });
