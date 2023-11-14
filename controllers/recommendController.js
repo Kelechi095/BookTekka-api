@@ -4,7 +4,7 @@ import Book from "../models/bookModel.js";
 
 export const getRecommendations = async (req, res, next) => {
   try {
-    const { search, status, sort } = req.query;
+    const { search, genre, sort } = req.query;
 
     const queryObject = {};
 
@@ -12,9 +12,13 @@ export const getRecommendations = async (req, res, next) => {
       queryObject.title = { $regex: search, $options: "i" };
     }
 
+    if (genre && genre !== "All") {
+      queryObject.genre = genre;
+    }
+
     const sortOptions = {
-      Newest: "-createdAt",
-      Oldest: "createdAt",
+      "Newest": "-createdAt",
+      "Oldest": "createdAt",
       "A-Z": "title",
       "Z-A": "-title",
     };
