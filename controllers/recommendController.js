@@ -18,8 +18,8 @@ export const getRecommendations = async (req, res, next) => {
     }
 
     const sortOptions = {
-      "Newest": "-createdAt",
-      "Oldest": "createdAt",
+      Newest: "-createdAt",
+      Oldest: "createdAt",
       "A-Z": "title",
       "Z-A": "-title",
     };
@@ -40,14 +40,39 @@ export const getRecommendations = async (req, res, next) => {
       queryObject
     );
 
-    const actualRecommendation = recommendations.map(rec => {
-      const user = User.findOne({_id: rec.posterId})
+    /* async function getUsername(posterId) {
+      const user = await User.findOne({ _id: posterId });
+      return user.username;
+    }
+    async function getPhoto(posterId) {
+      const user = await User.findOne({ _id: posterId });
+      return user.profilePicture;
+    } */
 
-      return {...rec, poster: user.username, posterPhoto: user.profilePicture}
-    })
+   
+    const promises = recommendations.map(async(rec) => {
+      const user = await User.findOne({_id: rec.posterId})
+      
+      return {
+        ...rec,
+        poster: user.username,
+        posterPhoto: user.profilePicture,
+      };
+    });
+
+    
+    const actualRecommendation = await Promise.all(promises)
+
+    //console.log(actualRecommendation)
 
     const numOfPages = Math.ceil(totalRecommendations / limit);
-    res.status(200).json({ totalRecommendations, numOfPages, recommendations: actualRecommendation });
+    res
+      .status(200)
+      .json({
+        totalRecommendations,
+        numOfPages,
+        recommendations: [{...actualRecommendation[0]._doc, poster: actualRecommendation[0].poster, posterPhoto: actualRecommendation[0].posterPhoto}],
+      });
   } catch (error) {
     next(errorHandler(400, error.message));
   }
@@ -114,7 +139,7 @@ export const createRecommendation = async (req, res, next) => {
       description,
       thumbnail,
       smallThumbnail,
-      posterId: req.user._id
+      posterId: req.user._id,
     });
 
     await newRecommendation.save();
@@ -126,14 +151,13 @@ export const createRecommendation = async (req, res, next) => {
 
 export const addReview = async (req, res, next) => {
   try {
+    const { bookId, review, reviewer } = req.body;
 
-    const {bookId, review, reviewer}= req.body
-
-    if(!review) return res.status(400).json({msg: "Review required"})
+    if (!review) return res.status(400).json({ msg: "Review required" });
 
     await Recommendation.findOneAndUpdate(
       { _id: bookId },
-      { $push: { reviews: {review, reviewer, reviewerId: req.user._id} }}
+      { $push: { reviews: { review, reviewer, reviewerId: req.user._id } } }
     );
 
     res.status(200).json({ msg: "Review added successfully" });
@@ -153,4 +177,3 @@ export const getSingleRecommendation = async (req, res, next) => {
     next(errorHandler(400, error.message));
   }
 };
-
