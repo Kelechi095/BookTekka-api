@@ -131,3 +131,16 @@ export const addReview = async (req, res, next) => {
     next(errorHandler(400, error.message));
   }
 };
+
+export const getSingleRecommendation = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const recommendation = await Recommendation.findOne({ _id: id });
+    if (!recommendation) return next(errorHandler(400, "No book found"));
+
+    res.status(200).json(recommendation);
+  } catch (error) {
+    next(errorHandler(400, error.message));
+  }
+};
+
