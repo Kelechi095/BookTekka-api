@@ -117,7 +117,7 @@ export const addReview = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const {newReview} = req.body
+    const newReview = req.body
 
     if(!review) return res.status(400).json({msg: "Review required"})
 
