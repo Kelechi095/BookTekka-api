@@ -65,13 +65,19 @@ export const getRecommendations = async (req, res, next) => {
 
     //console.log(actualRecommendation)
 
+    const newRec = actualRecommendation.map(rec => {
+      return {...rec._doc, poster: rec.poster, posterPhoto: rec.posterPhoto}
+    })
+
+    console.log(newRec)
+
     const numOfPages = Math.ceil(totalRecommendations / limit);
     res
       .status(200)
       .json({
         totalRecommendations,
         numOfPages,
-        recommendations: [{...actualRecommendation[0]._doc, poster: actualRecommendation[0].poster, posterPhoto: actualRecommendation[0].posterPhoto}],
+        recommendations: newRec,
       });
   } catch (error) {
     next(errorHandler(400, error.message));
