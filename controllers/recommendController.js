@@ -106,8 +106,7 @@ export const createRecommendation = async (req, res, next) => {
       description,
       thumbnail,
       smallThumbnail,
-      poster: req.user.username,
-      posterPhoto: req.user.profilePicture,
+      posterId: req.user._id
     });
 
     await newRecommendation.save();
@@ -126,7 +125,7 @@ export const addReview = async (req, res, next) => {
 
     await Recommendation.findOneAndUpdate(
       { _id: bookId },
-      { $push: { reviews: {review, reviewer, reviewerImage: req.user.profilePicture} }}
+      { $push: { reviews: {review, reviewer, reviewerId: req.user._id} }}
     );
 
     res.status(200).json({ msg: "Review added successfully" });

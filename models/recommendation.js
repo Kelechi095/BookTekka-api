@@ -18,12 +18,10 @@ const recommendationSchema = new mongoose.Schema(
         type: String
     },
 
-    poster: {
-      type: String
-    },
-
-    posterPhoto: {
-      type: String,
+    posterId: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: [true, "Please provide user"],
     },
 
     thumbnail: {
@@ -44,9 +42,14 @@ const recommendationSchema = new mongoose.Schema(
     },
     reviews: [
       {
-        review: String,
-        reviewer: String,
-        reviewerImage: String
+        review: {
+          type: String
+        },
+        reviewerId: {
+          type: mongoose.Types.ObjectId,
+          ref: "User",
+          required: [true, "Please provide user"],
+        },
       }
     ],
   },
