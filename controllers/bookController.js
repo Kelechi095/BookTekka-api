@@ -82,7 +82,7 @@ export const createBook = async (req, res, next) => {
     )
       return next(errorHandler(400, "Value required"));
 
-      const isExists = await Book.findOne({id: req.user._id.toString(), title})
+      const isExists = await Book.findOne({posterId: req.user._id.toString(), title})
 
       if(isExists) return res.status(400).json({msg: "Book already exists in your library"})
 
