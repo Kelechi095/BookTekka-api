@@ -112,7 +112,12 @@ export const likeRecommendation = async (req, res, next) => {
 export const addToLibrary = async (req, res, next) => {
   const { title, author, genre, description, thumbnail, smallThumbnail } =
     req.body;
-  try {
+
+    try {
+    const alreadyExists = await Book.findOne({title, posterId: req.user._id.toString()})
+
+    if(alreadyExists) return res.status(400).json({msg: 'Book already exists in your library'})
+
     const newBook = new Book({
       title,
       author,

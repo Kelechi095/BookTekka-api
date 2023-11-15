@@ -52,9 +52,7 @@ const recommendationSchema = new mongoose.Schema(
           type: String
         },
         reviewerId: {
-          type: mongoose.Types.ObjectId,
-          ref: "User",
-          required: [true, "Please provide user"],
+          type: String
         },
       }
     ],
