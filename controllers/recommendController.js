@@ -90,7 +90,7 @@ export const likeRecommendation = async (req, res, next) => {
 
     const recommendation = await Recommendation.findOne({ _id: id });
 
-    if (recommendation.likers.includes(req.user.username)) {
+    if (recommendation.likers.includes(req.user._id)) {
       await Recommendation.findOneAndUpdate(
         { _id: id },
         { $pull: { likers: req.user._id }, $inc: { likes: -1 } }
