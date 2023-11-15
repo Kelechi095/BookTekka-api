@@ -51,7 +51,7 @@ const recommendationSchema = new mongoose.Schema(
         review: {
           type: String
         },
-        reviewerId: {
+        reviewer: {
           type: String
         },
       }
