@@ -12,6 +12,16 @@ export const registerUser = async (req, res, next) => {
       return next(errorHandler(400, "Fill all fields"));
     }
 
+    const isEmailExists = await User.findOne({ email });
+
+    if (isEmailExists)
+      return res.status(400).json({ msg: "Email already used" });
+
+    const isUsernameExists = await User.findOne({ username });
+
+    if (isUsernameExists)
+      return res.status(400).json({ msg: "Username already exists" });
+
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     const newUser = new User({ username, email, password: hashedPassword });
@@ -225,26 +235,25 @@ export const updateProfile = async (req, res, next) => {
     if (!file) {
       user.username = newUsername;
       await user.save();
-
     } else {
-        cloudinary.config({
-          cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-          api_key: process.env.CLOUDINARY_API_KEY,
-          api_secret: process.env.CLOUDINARY_API_SECRET,
-        });
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
 
-        const uploadRes = await cloudinary.uploader.upload(file, {
-          upload_preset: "mernAuth",
-        });
+      const uploadRes = await cloudinary.uploader.upload(file, {
+        upload_preset: "mernAuth",
+      });
 
-        if (!uploadRes)
-          return res.status(400).json({ msg: "error uploading photo" });
+      if (!uploadRes)
+        return res.status(400).json({ msg: "error uploading photo" });
 
-        user.username = newUsername;
-        user.profilePicture = uploadRes.url;
+      user.username = newUsername;
+      user.profilePicture = uploadRes.url;
 
-        await user.save();
-      }
+      await user.save();
+    }
 
     const accessToken = jwt.sign(
       {
