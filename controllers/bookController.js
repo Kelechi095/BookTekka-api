@@ -2,6 +2,7 @@ import Book from "../models/bookModel.js";
 import { errorHandler } from "../utils/error.js";
 import mongoose from "mongoose";
 import User from "../models/userModel.js";
+import Recommendation from "../models/recommendation.js";
 
 export const getAllBooks = async (req, res, next) => {
   try {
@@ -163,9 +164,10 @@ export const getOverview = async(req, res) => {
     const totalUnread = await Book.countDocuments({posterId: req.user._id.toString(), status: "Unread"})
     const totalReading = await Book.countDocuments({posterId: req.user._id.toString(), status: "Reading"})
     const totalFinished = await Book.countDocuments({posterId: req.user._id.toString(), status: "Finished"})
+    const totalRecommendations = await Recommendation.countDocuments({posterId: req.user._id.toString()})
 
 
-    res.status(200).json({totalBooks, totalUnread, totalReading, totalFinished})
+    res.status(200).json({totalBooks, totalUnread, totalReading, totalFinished, totalRecommendations})
   } catch (error) {
     next(errorHandler(400, error.message));
   }
