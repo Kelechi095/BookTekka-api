@@ -28,7 +28,6 @@ export const getAllBooks = async (req, res, next) => {
 
     const sortKey = sortOptions[sort] || sortOptions.Latest;
 
-    // setup pagination
 
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -176,6 +175,26 @@ export const getOverview = async(req, res) => {
 
 
     res.status(200).json({totalBooks, totalUnread, totalReading, totalFinished, totalRecommendations})
+  } catch (error) {
+    next(errorHandler(400, error.message));
+  }
+}
+export const getPublicProfile = async(req, res, next) => {
+  try {
+
+    const {id} = req.params
+
+    const totalBooks = await Book.countDocuments({posterId: id})
+    const totalRecommendations = await Recommendation.countDocuments({posterId: id})
+    const user = await User.findOne({_id: id})
+
+    const userBio = user.userBio
+    const username = user.username
+    const profilePicture = user.profilePicture
+    const recentlyAdded = await Book.find({posterId: id}).sort({createdAt: -1})
+
+
+    res.status(200).json({userBio, username, recentlyAdded, profilePicture, totalBooks, totalRecommendations})
   } catch (error) {
     next(errorHandler(400, error.message));
   }
