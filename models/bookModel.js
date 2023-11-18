@@ -39,6 +39,21 @@ const bookSchema = new mongoose.Schema({
         default: 0
     },
 
+    currentPage: {
+        type: Number,
+        default: 0
+    },
+
+    totalPages: {
+        type: Number,
+        default: 0
+    },
+
+    pagesRemaining: {
+        type: Number,
+        default: 0
+    },
+
     status: {
         type: String,
         enum: ['Finished', 'Reading', 'Unread'],

@@ -152,7 +152,11 @@ export const updateProgress = async (req, res, next) => {
     const book = await Book.findOne({ _id: id });
     if (!book) return next(errorHandler(400, "No Book found"));
 
+    book.currentPage = currentPage
+    book.totalPages = totalPages
     book.progress = newProgress;
+    book.pagesRemaining = totalPages - currentPage
+    
 
     await book.save();
     res.status(200).json({ msg: "Book progress updated" });
